@@ -123,14 +123,14 @@ int main(void)
   HW_Init();
 
   /* Configure Debug mode */
-  DBG_Init();
+  // DBG_Init(); // removed debug mode for canarin
 
   /* USER CODE BEGIN 1 */
   CMD_Init();
   /*Disable standby mode*/
   LPM_SetOffMode(LPM_APPLI_Id, LPM_Disable);
 
-  PPRINTF("ATtention command interface\n\r");
+  PPRINTF("ATtention command interface for Canarin Lorawan\n\r");
   /* USER CODE END 1 */
 
   /* Configure the Lora Stack*/

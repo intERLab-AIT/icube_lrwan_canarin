@@ -135,8 +135,8 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
   USARTx_CLK_ENABLE();
   /* select USARTx clock source*/
   RCC_PeriphCLKInitTypeDef  PeriphClkInit = {0};
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_LPUART1;
-  PeriphClkInit.Lpuart1ClockSelection = RCC_LPUART1CLKSOURCE_HSI;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART1;
+  PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_HSI;
   HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit);
 
   /* Enable DMA clock */
@@ -204,19 +204,14 @@ void vcom_IoInit(void)
   USARTx_TX_GPIO_CLK_ENABLE();
   USARTx_RX_GPIO_CLK_ENABLE();
   /* UART TX GPIO pin configuration  */
-  GPIO_InitStruct.Pin       = USARTx_TX_PIN;
+  GPIO_InitStruct.Pin       = USARTx_TX_PIN | USARTx_RX_PIN;
   GPIO_InitStruct.Mode      = GPIO_MODE_AF_PP;
   GPIO_InitStruct.Pull      = GPIO_NOPULL;
   GPIO_InitStruct.Speed     = GPIO_SPEED_HIGH;
-  GPIO_InitStruct.Alternate = USARTx_TX_AF;
+  GPIO_InitStruct.Alternate = USARTx_TX_AF | USARTx_RX_AF;
 
+  // Rx and Tx is in the same GPIO
   HAL_GPIO_Init(USARTx_TX_GPIO_PORT, &GPIO_InitStruct);
-
-  /* UART RX GPIO pin configuration  */
-  GPIO_InitStruct.Pin = USARTx_RX_PIN;
-  GPIO_InitStruct.Alternate = USARTx_RX_AF;
-
-  HAL_GPIO_Init(USARTx_RX_GPIO_PORT, &GPIO_InitStruct);
 }
 
 void vcom_IoDeInit(void)
