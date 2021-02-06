@@ -24,6 +24,7 @@
 #include "lora.h"
 #include "lora-test.h"
 #include "tiny_sscanf.h"
+#include "secure-element.h"
 
 
 /**
@@ -882,6 +883,7 @@ uint8_t *lora_config_joineui_get(void)
 void lora_config_joineui_set(uint8_t joineui[8])
 {
   memcpy1(lora_config.JoinEui, joineui, sizeof(lora_config.JoinEui));
+  SecureElementSetJoinEui(joineui);
 }
 
 uint8_t *lora_config_appkey_get(void)

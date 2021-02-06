@@ -423,12 +423,16 @@ ATEerror_t at_NwkSKey_get(const char *param)
   return AT_OK;
 }
 
+/* LoRaWan Specification V1.1.0, chapter 6.1.2.3-6.1.2.4
+ * defines MIB_F_NWK_S_INT_KEY ==  MIB_S_NWK_S_INT_KEY == MIB_NWK_S_ENC_KEY
+ */
 ATEerror_t at_NwkSKey_set(const char *param)
 {
   MibRequestConfirm_t mib;
   LoRaMacStatus_t status;
   uint8_t NwkSKey[16];
 
+  /* set MIB_NWK_S_ENC_KEY */
   mib.Type = MIB_NWK_S_ENC_KEY;
 
   if (sscanf_16_hhx(param, NwkSKey) != 16)
@@ -437,6 +441,30 @@ ATEerror_t at_NwkSKey_set(const char *param)
   }
 
   mib.Param.NwkSEncKey = NwkSKey;
+  status = LoRaMacMibSetRequestConfirm(&mib);
+  CHECK_STATUS(status);
+
+  /* set MIB_F_NWK_S_INT_KEY */
+  mib.Type = MIB_F_NWK_S_INT_KEY;
+
+  if (sscanf_16_hhx(param, NwkSKey) != 16)
+  {
+    return AT_PARAM_ERROR;
+  }
+
+  mib.Param.FNwkSIntKey = NwkSKey;
+  status = LoRaMacMibSetRequestConfirm(&mib);
+  CHECK_STATUS(status);
+
+  /* set MIB_S_NWK_S_INT_KEY */
+  mib.Type = MIB_S_NWK_S_INT_KEY;
+
+  if (sscanf_16_hhx(param, NwkSKey) != 16)
+  {
+    return AT_PARAM_ERROR;
+  }
+
+  mib.Param.SNwkSIntKey = NwkSKey;
   status = LoRaMacMibSetRequestConfirm(&mib);
   CHECK_STATUS(status);
 
