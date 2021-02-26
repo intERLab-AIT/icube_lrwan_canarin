@@ -578,6 +578,18 @@ static const struct ATCommand_s ATCommand[] =
     .run = at_return_error,
   },
 #endif /* LORAMAC_CLASSB_ENABLED */
+
+  {
+    .string = AT_FCNT,
+    .size_string = sizeof(AT_FCNT) - 1,
+#ifndef NO_HELP
+    .help_string = "AT"AT_FCNT ": Set the frame counter "AT_FCNT "=up:down\r\n",
+#endif
+    .get = at_return_error,
+    .set = at_FrameCounter_set,
+    .run = at_return_error,
+  },
+
 };
 
 

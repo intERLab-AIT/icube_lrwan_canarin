@@ -99,6 +99,7 @@ typedef enum eATEerror
 #define AT_BTIME      "+BTIME"
 #define AT_BGW        "+BGW"
 #define AT_LTIME      "+LTIME"
+#define AT_FCNT		  "+FCNT"
 /* Exported functions ------------------------------------------------------- */
 
 /**
@@ -592,6 +593,14 @@ ATEerror_t at_test_get_lora_config(const char *param);
  * @retval AT_OK
  */
 ATEerror_t at_Certif(const char *param);
+
+/**
+ * @brief Set Frame counter, (Up and down)
+ * @param String parameter
+ * @retval AT_OK
+ */
+
+ATEerror_t at_FrameCounter_set(const char *param);
 
 #ifdef __cplusplus
 }
