@@ -1696,3 +1696,46 @@ LoRaMacCryptoStatus_t LoRaMacCryptoDeriveMcSessionKeyPair( AddressIdentifier_t a
 
     return LORAMAC_CRYPTO_SUCCESS;
 }
+
+LoRaMacCryptoStatus_t LoRaMacCryptoGetCurrentFCntUp( uint32_t* fCntUp )
+{
+    if( fCntUp == NULL )
+    {
+        return LORAMAC_CRYPTO_ERROR_NPE;
+    }
+
+    *fCntUp = CryptoCtx.NvmCtx->FCntList.FCntUp;
+
+    return LORAMAC_CRYPTO_SUCCESS;
+}
+
+LoRaMacCryptoStatus_t LoRaMacCryptoGetCurrentFCntDown( FCntIdentifier_t fCntID, uint32_t* fCntDown )
+{
+    LoRaMacCryptoStatus_t cryptoStatus = LORAMAC_CRYPTO_ERROR;
+
+    if( fCntDown == NULL )
+    {
+        return LORAMAC_CRYPTO_ERROR_NPE;
+    }
+
+    uint32_t lastDown = 0;
+    cryptoStatus = GetLastFcntDown( fCntID, &lastDown );
+
+    *fCntDown = lastDown;
+
+    return cryptoStatus;
+    
+}
+
+LoRaMacCryptoStatus_t LoRaMacCryptoSetCurrentFCntUp( uint32_t fCntUp )
+{
+    CryptoCtx.NvmCtx->FCntList.FCntUp = fCntUp;
+    CryptoCtx.EventCryptoNvmCtxChanged( );
+    return LORAMAC_CRYPTO_SUCCESS;
+}
+
+LoRaMacCryptoStatus_t LoRaMacCryptoSetCurrentFCntDown( FCntIdentifier_t fCntID, uint32_t fCntUp )
+{
+    UpdateFCntDown(fCntID, fCntUp);
+    return LORAMAC_CRYPTO_SUCCESS;
+}

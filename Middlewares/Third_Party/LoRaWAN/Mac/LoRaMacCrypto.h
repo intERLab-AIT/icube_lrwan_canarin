@@ -312,4 +312,15 @@ LoRaMacCryptoStatus_t LoRaMacCryptoDeriveMcSessionKeyPair( AddressIdentifier_t a
 
 /*! \} addtogroup LORAMAC */
 
+/* Get up framecounter and down framecounter */
+
+LoRaMacCryptoStatus_t LoRaMacCryptoGetCurrentFCntUp( uint32_t* fCntUp );
+
+LoRaMacCryptoStatus_t LoRaMacCryptoGetCurrentFCntDown( FCntIdentifier_t fCntID, uint32_t* fCntDown );
+
+LoRaMacCryptoStatus_t LoRaMacCryptoSetCurrentFCntUp( uint32_t fCntUp );
+
+LoRaMacCryptoStatus_t LoRaMacCryptoSetCurrentFCntDown( FCntIdentifier_t fCntID, uint32_t fCntUp );
+
+
 #endif // __LORAMAC_CRYPTO_H__

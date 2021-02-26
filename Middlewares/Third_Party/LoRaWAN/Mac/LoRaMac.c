@@ -4710,3 +4710,35 @@ void LoRaMacTestSetDutyCycleOn( bool enable )
         MacCtx.NvmCtx->DutyCycleOn = enable;
     }
 }
+
+
+uint32_t LoRaMacGetCurrentFCntUp( )
+{
+    uint32_t fCntUp = 0;
+    if ( LoRaMacCryptoGetCurrentFCntUp(&fCntUp) == LORAMAC_CRYPTO_ERROR_NPE )
+        return 0;
+    return fCntUp;
+}
+
+uint32_t LoRaMacGetCurrentFCntDown( )
+{
+    uint32_t fCntDown = 0;
+    if ( LoRaMacCryptoGetCurrentFCntDown(FCNT_DOWN, &fCntDown) == LORAMAC_CRYPTO_SUCCESS )
+        return fCntDown;
+    return 0;
+}
+
+
+LoRaMacStatus_t LoRaMacSetFCntUp( uint32_t fCntUp)
+{
+    LoRaMacCryptoSetCurrentFCntUp( fCntUp );
+    return LORAMAC_STATUS_OK;
+}
+
+LoRaMacStatus_t LoRaMacSetFCntDown( uint32_t fCntDown)
+{
+    LoRaMacCryptoSetCurrentFCntDown( FCNT_DOWN, fCntDown );
+    return LORAMAC_STATUS_OK;
+}
+
+

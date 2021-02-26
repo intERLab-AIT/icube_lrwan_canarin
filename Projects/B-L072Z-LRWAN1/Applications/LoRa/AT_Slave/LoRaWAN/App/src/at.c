@@ -308,6 +308,7 @@ void set_at_receive(uint8_t AppPort, uint8_t *Buff, uint8_t BuffSize)
   }
   AT_PRINTF("\r\n");
 
+  AT_PRINTF("#FCNTDOWN:%lu#\r\n", LoRaMacGetCurrentFCntDown());
   /* the ReceivedDataSize variable is not reset. Allow to still have access to the received*/
   /* data by the way of either AT+RECVB or AT+RECV ---- ReceivedDataSize = 0;*/
 
@@ -1244,6 +1245,8 @@ ATEerror_t at_SendBinary(const char *param)
 
   if (status == LORA_SUCCESS)
   {
+	AT_PRINTF("#FCNTRUP:%lu#\r\n#FCNTRDOWN:%lu#\r\n",
+			LoRaMacGetCurrentFCntUp(), LoRaMacGetCurrentFCntDown());
     return AT_OK;
   }
   else
@@ -1294,6 +1297,8 @@ ATEerror_t at_Send(const char *param)
 
   if (status == LORA_SUCCESS)
   {
+    AT_PRINTF("#FCNTRUP:%lu#\r\n#FCNTRDOWN:%lu#\r\n",
+    		LoRaMacGetCurrentFCntUp(), LoRaMacGetCurrentFCntDown());
     return AT_OK;
   }
   else
@@ -1454,6 +1459,24 @@ ATEerror_t at_test_set_lora_config(const char *param)
 ATEerror_t at_test_stop(const char *param)
 {
   return TST_stop();
+}
+
+ATEerror_t at_FrameCounter_set(const char *param)
+{
+	const char *buf = param;
+	uint32_t fcnt_up, fcnt_down;
+
+	if (2 != tiny_sscanf(buf, "%u:%u", &fcnt_up, &fcnt_down)) {
+        AT_PRINTF("Cannot parse parameters\r\n");
+	    return AT_PARAM_ERROR;
+	}
+
+	LoRaMacSetFCntUp(fcnt_up);
+
+	LoRaMacSetFCntDown(fcnt_down);
+
+	return AT_OK;
+
 }
 /* Private functions ---------------------------------------------------------*/
 
